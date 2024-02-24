@@ -10,41 +10,37 @@ import java.util.List;
 
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
 
-    private final RoleServiceImpl roleService;
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           RoleServiceImpl roleService) {
+                           PasswordEncoder passwordEncoder) {
         this.userRepo = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User findUserById(Long id) {
         return userRepo.getById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User findUserByLogin(String login) {
         return userRepo.findByLogin(login);
     }
 
     @Override
+    @Transactional
     public void editUserById(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
@@ -56,7 +52,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }

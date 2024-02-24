@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import java.util.List;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepo;
@@ -20,28 +19,29 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void addRole(Role role) {
         roleRepo.save(role);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Role findRole(Long id) {
         return roleRepo.getReferenceById(id);
     }
 
     @Override
+    @Transactional
     public void editRoleById(Role role) {
         roleRepo.save(role);
     }
 
     @Override
+    @Transactional
     public void removeRoleById(Long id) {
         roleRepo.deleteById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Role> getListOfRoles() {
         return roleRepo.findAll();
     }
